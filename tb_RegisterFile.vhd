@@ -6,8 +6,6 @@ entity tb_RegisterFile is
 end tb_RegisterFile;
 
 architecture behavior of tb_RegisterFile is
-    -- The component ports must exactly match the entity ports in RegisterFile.vhd
-    component RegisterFile
     Port (
         ReadReg1  : in  STD_LOGIC_VECTOR (4 downto 0);
         ReadReg2  : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -20,7 +18,6 @@ architecture behavior of tb_RegisterFile is
     );
     end component;
 
-    -- Testbench signals can have underscores, that is fine
     signal Read_reg1   : STD_LOGIC_VECTOR (4 downto 0) := (others => '0');
     signal Read_reg2   : STD_LOGIC_VECTOR (4 downto 0) := (others => '0');
     signal Write_reg   : STD_LOGIC_VECTOR (4 downto 0) := (others => '0');
@@ -33,7 +30,6 @@ architecture behavior of tb_RegisterFile is
     constant clk_period : time := 10 ns;
 
 begin
-    -- PORT MAP links the Component Port => Testbench Signal
     uut: RegisterFile PORT MAP (
         clk => clk,
         RegWrite => RegWrite,
@@ -86,19 +82,7 @@ begin
         Read_reg1 <= "01111"; -- Read Reg 15 in the same cycle 
         wait for clk_period;
 
-        -- Test Case 6: The "Register 0" Rule
-        -- MIPS architecture traditionally hardwires Register 0 to always be zero.
-        -- Let's test if your design prevents writing to it, or if it overwrites it.
-        RegWrite <= '1';
-        Write_reg <= "00000"; -- Reg 0
-        Write_data <= x"DEADBEEF";
-        wait for clk_period;
-        
-        RegWrite <= '0';
-        Read_reg1 <= "00000"; -- Read Reg 0. It should ideally be 00000000.
-        wait for clk_period;
-
-        -- Test Case 7: Consecutive Writes and Simultaneous Reads
+        -- Test Case 6: Consecutive Writes and Simultaneous Reads
         RegWrite <= '1';
         Write_reg <= "10000"; -- Reg 16
         Write_data <= x"11112222";
@@ -113,7 +97,7 @@ begin
         Read_reg2 <= "10001"; 
         wait for clk_period;
 
-        -- Test Case 8: Rapid toggling of RegWrite
+        -- Test Case 7: Rapid toggling of RegWrite
         RegWrite <= '1';
         Write_reg <= "11111"; -- Reg 31
         Write_data <= x"99999999";

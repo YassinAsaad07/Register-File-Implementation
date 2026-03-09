@@ -18,7 +18,7 @@ end RegisterFile;
 architecture Behavioral of RegisterFile is
 
 type reg_file is array (31 downto 0) of std_logic_vector(31 downto 0);
-signal Registers : reg_file := (others => (others => '0'));        --Intilaize all with zero
+signal Registers : reg_file := (others => (others => '0'));       
 
 begin
 

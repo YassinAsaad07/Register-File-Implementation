@@ -6,6 +6,7 @@ entity tb_RegisterFile is
 end tb_RegisterFile;
 
 architecture behavior of tb_RegisterFile is
+    component RegisterFile
     Port (
         ReadReg1  : in  STD_LOGIC_VECTOR (4 downto 0);
         ReadReg2  : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -110,6 +111,17 @@ begin
         
         Read_reg2 <= "11111"; 
         wait for clk_period;
+
+        -- Test Case 8: Verify Register 0 is hardwired to zero
+        RegWrite <= '1';
+        Write_reg <= "00000"; 
+        Write_data <= x"AAAAAAAA"; 
+        wait for clk_period;
+        
+        RegWrite <= '0';
+        Read_reg1 <= "00000"; 
+        wait for clk_period;
+        
 
         wait;
     end process;

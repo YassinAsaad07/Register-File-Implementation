@@ -27,7 +27,9 @@ process(clk)
 begin
     if rising_edge(clk) then
         if RegWrite = '1' then
+          if to_integer(unsigned(Writereg)) /= 0 then
             Registers(to_integer(unsigned(WriteReg))) <= WriteData;
+          end if;
         end if;
     end if;
 end process;
